@@ -1,4 +1,4 @@
-package com.company.project.model.entity
+package com.company.project.model
 
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -36,5 +36,19 @@ data class User(
          * 密码
          */
         @Column
-        var password: String? = null
+        var password: String? = null,
+
+        /**
+         * 姓名
+         */
+        @Column
+        var name: String? = null,
+
+        /**
+         * 电话
+         */
+        @Column
+        var phone: String? = null
+
+
 )

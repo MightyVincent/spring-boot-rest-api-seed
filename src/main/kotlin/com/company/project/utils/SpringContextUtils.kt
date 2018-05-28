@@ -18,21 +18,7 @@ class SpringContextUtils : ApplicationContextAware {
 
     companion object {
 
-        private var applicationContext: ApplicationContext? = null
-
-
-        /**
-         * 上下文对象实例
-         */
-
-        /**
-         * 获取applicationContext
-         *
-         * @return
-         */
-        fun getApplicationContext(): ApplicationContext? {
-            return applicationContext
-        }
+        lateinit var applicationContext: ApplicationContext
 
         /**
          * 通过name获取 Bean.
@@ -41,7 +27,7 @@ class SpringContextUtils : ApplicationContextAware {
          * @return
          */
         fun getBean(name: String): Any {
-            return applicationContext!!.getBean(name)
+            return applicationContext.getBean(name)
         }
 
         /**
@@ -52,7 +38,7 @@ class SpringContextUtils : ApplicationContextAware {
          * @return
         </T> */
         fun <T> getBean(clazz: Class<T>): T {
-            return applicationContext!!.getBean(clazz)
+            return applicationContext.getBean(clazz)
         }
 
         /**
@@ -64,7 +50,7 @@ class SpringContextUtils : ApplicationContextAware {
          * @return
         </T> */
         fun <T> getBean(name: String, clazz: Class<T>): T {
-            return applicationContext!!.getBean(name, clazz)
+            return applicationContext.getBean(name, clazz)
         }
     }
 

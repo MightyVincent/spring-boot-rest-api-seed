@@ -1,19 +1,13 @@
 package com.company.project.model.vo
 
-data class UserVO(
+import com.company.project.model.User
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.rest.core.config.Projection
 
-        /**
-         * 主键id
-         */
-        var id: Int? = null,
+@Projection(types = [User::class])
+interface UserVO {
 
-        /**
-         * 用户名
-         */
-        var username: String? = null,
+    @Value("#{target.name} #{target.phone}")
+    fun getInfo(): String
 
-        /**
-         * 密码
-         */
-        var password: String? = null
-)
+}
