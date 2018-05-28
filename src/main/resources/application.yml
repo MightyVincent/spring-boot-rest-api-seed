@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    active: dev
+  resources:
+    # 默认资源映射
+    add-mappings: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  mvc:
+    # 404 交给异常处理器处理
+    throw-exception-if-no-handler-found: true
+logging:
+  level:
+#    org:
+#      hibernate: DEBUG
+    com:
+      zaxxer:
+        hikari:
+         HikariConfig: DEBUG
+# 自定义配置
+project:
+  admin-username: admin
+  admin-password: 123
+  jwt-secret: DFGH(*&FD(G)^&URG)YU&*F)DSG*H(*
