@@ -6,7 +6,7 @@
 
 起源于某种子项目[lihengming/spring-boot-api-project-seed](https://github.com/lihengming/spring-boot-api-project-seed)，使用之后发现诸多不如我意的地方，遂想定制一个。
 
-定制期间浏览了一遍`Spring Initializr`上的所有组件，又捡起了好久之前看到的当时还不完善的`Spring Data REST`，读过一遍API后，发现该组件从各方面完完全全能够满足一个REST种子项目的所有需求，其强大简直令人咋舌。
+定制期间浏览了一遍`Spring Initializr`上的所有组件，又捡起了好久之前看到的当时还不完善的`Spring Data REST`，读过一遍API后，发现该组件从各方面完完全全能够满足一个REST种子项目的所有需求，其封装程度简直令人咋舌。
 
 于是基于此组件以及个人常用的东西定制了本种子项目，以减少重复工作，开箱即用，节约时间好撩妹?:D
 

@@ -45,7 +45,7 @@ class JwtTokenHelper {
         fun buildHeader(response: HttpServletResponse, auth: Authentication) {
             val token = build(auth.principal.toString())
             response.addHeader(HEADER, token)
-            response.addCookie(Cookie(HEADER, URLEncoder.encode(HEADER, "UTF-8")))
+            response.addCookie(Cookie(HEADER, URLEncoder.encode(token, "UTF-8")))
             response.addHeader("Access-Control-Expose-Headers", HEADER)
         }
 

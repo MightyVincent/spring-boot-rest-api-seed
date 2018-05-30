@@ -14,14 +14,14 @@ spring:
   data:
     rest:
       base-path: /api
-logging:
-  level:
+#logging:
+#  level:
 #    org:
 #      hibernate: DEBUG
-    com:
-      zaxxer:
-        hikari:
-         HikariConfig: DEBUG
+#    com:
+#      zaxxer:
+#        hikari:
+#         HikariConfig: DEBUG
 # 自定义配置
 project:
   jwt-secret: DFGH(*&FD(G)^&URG)YU&*F)DSG*H(*

@@ -13,10 +13,10 @@ import java.nio.charset.Charset
  * @author Vincent
  */
 @Configuration
-class SpringDataRestConfiguration : RepositoryRestConfigurerAdapter() {
-    override fun configureRepositoryRestConfiguration(config: RepositoryRestConfiguration?) {
+class SpringDataRestConfig : RepositoryRestConfigurerAdapter() {
+    override fun configureRepositoryRestConfiguration(config: RepositoryRestConfiguration) {
 
-        config!!.corsRegistry.addMapping("/api/**")
+        config.corsRegistry.addMapping("/api/**")
                 .allowedOrigins("*")
                 .allowedMethods("*")
                 .allowCredentials(true)

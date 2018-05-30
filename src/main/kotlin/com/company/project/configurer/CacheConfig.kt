@@ -6,4 +6,4 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @EnableCaching
-class CacheConfiguration : CachingConfigurerSupport()
+class CacheConfig : CachingConfigurerSupport()
