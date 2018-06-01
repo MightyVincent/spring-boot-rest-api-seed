@@ -23,5 +23,3 @@ spring:
 #        hikari:
 #         HikariConfig: DEBUG
 # 自定义配置
-project:
-  jwt-secret: DFGH(*&FD(G)^&URG)YU&*F)DSG*H(*

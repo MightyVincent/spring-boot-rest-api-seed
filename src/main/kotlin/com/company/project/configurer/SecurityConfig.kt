@@ -11,8 +11,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -35,8 +39,23 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         val loginProcessUrl = "/api/login"
-        /*val authenticationFilter = AdminAuthenticationFilter(authenticationManager(), loginProcessUrl)
-        authenticationFilter.setRequiresAuthenticationRequestMatcher(AntPathRequestMatcher(loginProcessUrl, "POST"))*/
+//        val loginProcessUrl = "/login"
+        val authenticationFilter = object : UsernamePasswordAuthenticationFilter() {
+            init {
+                this.authenticationManager = authenticationManager()
+            }
+
+            override fun successfulAuthentication(request: HttpServletRequest?, response: HttpServletResponse?, chain: FilterChain?, authResult: Authentication?) {
+                super.successfulAuthentication(request, response, chain, authResult)
+            }
+
+            override fun unsuccessfulAuthentication(request: HttpServletRequest?, response: HttpServletResponse?, failed: AuthenticationException?) {
+                super.unsuccessfulAuthentication(request, response, failed)
+            }
+        }
+        authenticationFilter.setAuthenticationManager(this.authenticationManager())
+        authenticationFilter.setRequiresAuthenticationRequestMatcher(AntPathRequestMatcher(loginProcessUrl, "POST"))
+        /*val authenticationFilter = AdminAuthenticationFilter(authenticationManager(), loginProcessUrl)*/
         val handleAuthException = { _: HttpServletRequest,
                                     response: HttpServletResponse, authException: AuthenticationException ->
             response.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
@@ -46,15 +65,10 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
             }
         }
         http
-                .formLogin()
-                .and()
-//                .antMatcher("/api/**")
+                .antMatcher("/api/**")
                 .csrf().disable()
                 .cors()
                 .and()
-//                .exceptionHandling().authenticationEntryPoint(handleAuthException)
-//                .and()
-//                .formLogin()
 //                .loginProcessingUrl(loginProcessUrl)
 //                .successHandler({ request, response, authResult ->
 //
@@ -67,12 +81,11 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 //                })
 //                .failureHandler(handleAuthException)
 //                .and()
-                /*.addFilterAt(authenticationFilter,
-                        UsernamePasswordAuthenticationFilter::class.java)*/
+                .addFilterAt(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
                 /*.addFilterAfter(AdminAuthorizationFilter(authenticationManager()),
                         UsernamePasswordAuthenticationFilter::class.java)*/
                 .authorizeRequests()
-//                .antMatchers(loginProcessUrl).permitAll()
+                .antMatchers(loginProcessUrl).permitAll()
                 .anyRequest().authenticated()
     }
 }
