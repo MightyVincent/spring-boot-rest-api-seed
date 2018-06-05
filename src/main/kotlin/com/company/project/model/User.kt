@@ -3,6 +3,9 @@ package com.company.project.model
 import java.time.LocalDateTime
 import javax.persistence.*
 
+/**
+ * @author VincentLee
+ */
 @Entity
 @Table(name = "user")
 data class User(
@@ -49,6 +52,5 @@ data class User(
          */
         @Column
         var phone: String? = null
-
 
 )

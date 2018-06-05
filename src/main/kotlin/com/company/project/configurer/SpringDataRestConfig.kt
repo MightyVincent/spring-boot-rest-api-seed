@@ -10,7 +10,7 @@ import org.springframework.http.converter.HttpMessageConverter
 import java.nio.charset.Charset
 
 /**
- * @author Vincent
+ * @author VincentLee
  */
 @Configuration
 class SpringDataRestConfig : RepositoryRestConfigurerAdapter() {

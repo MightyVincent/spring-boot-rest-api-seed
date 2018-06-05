@@ -9,8 +9,9 @@ import org.springframework.session.web.http.HeaderHttpSessionIdResolver
 import org.springframework.session.web.http.HttpSessionIdResolver
 import java.util.concurrent.ConcurrentHashMap
 
-
-
+/**
+ * @author VincentLee
+ */
 @Configuration
 @EnableSpringHttpSession
 class SpringSessionConfig {

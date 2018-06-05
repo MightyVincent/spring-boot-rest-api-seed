@@ -4,6 +4,9 @@ import com.company.project.model.User
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.rest.core.config.Projection
 
+/**
+ * @author VincentLee
+ */
 @Projection(types = [User::class])
 interface UserVO {
 

@@ -16,6 +16,9 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+/**
+ * @author VincentLee
+ */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig : WebSecurityConfigurerAdapter() {
@@ -26,9 +29,10 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
         web.ignoring().antMatchers("/public/**", "/webjars/**")
     }
 
-    override fun configure(auth: AuthenticationManagerBuilder) {
+    override fun configure(builder: AuthenticationManagerBuilder) {
         val encoder = BCryptPasswordEncoder(4)
-        auth.inMemoryAuthentication().passwordEncoder(encoder)
+        builder
+                .inMemoryAuthentication().passwordEncoder(encoder)
                 .withUser("admin").password(encoder.encode("123")).roles("ADMIN", "USER").and()
                 .withUser("user").password(encoder.encode("123")).roles("USER")
     }
@@ -63,7 +67,6 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 })
                 .and()
                 .authorizeRequests()
-//                .antMatchers(loginProcessUrl).permitAll()
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
     }

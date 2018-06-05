@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import javax.annotation.Resource
 
 /**
- * Cache工具类
+ * @author VincentLee
  */
 @Component
 object CacheUtil {
