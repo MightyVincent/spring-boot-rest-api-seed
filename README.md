@@ -19,5 +19,13 @@
     1. 关于@Projection接口：可以用来过滤或格式化属性，必须和@Entity类同包或子包
 1. Spring Security
 
+```
+POST http://localhost:8080/login?username=admin&password=123
+
+GET http://localhost:8080/api/users
+X-Requested-With: XMLHttpRequest
+X-Auth-Token: 2dc26be2-0eb1-49b8-9fcc-6e137160b6b3
+```
+
 <!-- ## 致谢 Reference -->
 
