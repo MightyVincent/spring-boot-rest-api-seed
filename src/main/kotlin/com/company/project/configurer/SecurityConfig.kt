@@ -1,6 +1,5 @@
 package com.company.project.configurer
 
-import com.company.project.utils.isAjaxRequest
 import com.company.project.utils.writeJSON
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpServletResponse
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig : WebSecurityConfigurerAdapter() {
-    val loginUrl = "/login"
 
     @Throws(Exception::class)
     override fun configure(web: WebSecurity) {
@@ -45,18 +42,9 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
         http
                 .csrf().disable()
                 .cors()
-                .and()
-                // 授权
-                .formLogin()
-                .loginPage(loginUrl)
-                .loginProcessingUrl(loginUrl)
-                .successHandler({ _, response, authResult ->
-                    response.writeJSON(ResponseEntity.ok(authResult.principal))
-                })
-                .failureHandler(handleAuthException)
-                .and()
+                /*.and()
                 // 验证失败
-                .exceptionHandling().authenticationEntryPoint(object : LoginUrlAuthenticationEntryPoint(loginUrl) {
+                .exceptionHandling().authenticationEntryPoint(object : LoginUrlAuthenticationEntryPoint("/login") {
                     override fun commence(request: HttpServletRequest, response: HttpServletResponse, authException: AuthenticationException) {
                         if (request.isAjaxRequest()) {
                             handleAuthException(request, response, authException)
@@ -64,7 +52,15 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                             super.commence(request, response, authException)
                         }
                     }
+                })*/
+                .and()
+                // 授权
+                .formLogin()
+                .loginProcessingUrl("/login")
+                .successHandler({ _, response, authResult ->
+                    response.writeJSON(ResponseEntity.ok(authResult.principal))
                 })
+                .failureHandler(handleAuthException)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/**").authenticated()
