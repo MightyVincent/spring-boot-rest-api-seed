@@ -29,13 +29,14 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(web: WebSecurity) {
         web
                 .ignoring().antMatchers("/public/**", "/webjars/**")
-                .and()
-                .securityInterceptor(object: FilterSecurityInterceptor() {
+                /*.and()
+                .securityInterceptor(object : FilterSecurityInterceptor() {
                     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
                         try {
                             super.doFilter(request, response, chain)
                         } catch (e: Exception) {
-                            if ((request as HttpServletRequest).isAjaxRequest()) {
+                            if (request is HttpServletRequest && response is HttpServletResponse
+                                    && (request as HttpServletRequest).isAjaxRequest()) {
                                 (response as HttpServletResponse)
                                         .writeJSON(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message))
                             } else {
@@ -43,7 +44,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                             }
                         }
                     }
-                })
+                })*/
     }
 
     override fun configure(builder: AuthenticationManagerBuilder) {
@@ -70,6 +71,21 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                     response.writeJSON(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(authException.message))
                 })
                 .and()
+                .addFilter(object : FilterSecurityInterceptor() {
+                    override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
+                        try {
+                            super.doFilter(request, response, chain)
+                        } catch (e: Exception) {
+                            if (request is HttpServletRequest && response is HttpServletResponse
+                                    && (request as HttpServletRequest).isAjaxRequest()) {
+                                (response as HttpServletResponse)
+                                        .writeJSON(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message))
+                            } else {
+                                throw e
+                            }
+                        }
+                    }
+                })
                 .authorizeRequests()
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
