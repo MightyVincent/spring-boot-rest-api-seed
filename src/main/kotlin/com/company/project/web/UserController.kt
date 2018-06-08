@@ -9,6 +9,7 @@ import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.ResponseBody
 
 
@@ -39,4 +40,13 @@ class UserController {
         return ResponseEntity.ok<Any>(resources)
     }
 
+    @GetMapping("/admin/{saying}")
+    fun admin(@PathVariable saying: String): ResponseEntity<*> {
+        return ResponseEntity.ok<Any>(saying)
+    }
+
+    @GetMapping("/user/{saying}")
+    fun user(@PathVariable saying: String): ResponseEntity<*> {
+        return ResponseEntity.ok<Any>(saying)
+    }
 }
