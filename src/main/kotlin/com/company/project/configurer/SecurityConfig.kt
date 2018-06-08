@@ -4,7 +4,6 @@ import com.company.project.utils.writeJSON
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -12,10 +11,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
-import org.springframework.security.web.access.AccessDeniedHandlerImpl
-import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import org.springframework.security.web.access.AccessDeniedHandler
 
 /**
  * @author VincentLee
@@ -44,22 +40,14 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .csrf().disable()
                 .cors()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/api/user/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
-                .and()
-                // 验证失败
                 .exceptionHandling()
-                // AJAX权限不足
-                .defaultAuthenticationEntryPointFor(AuthenticationEntryPoint { _, response, authException ->
+                // 匿名访问权限不足
+                .authenticationEntryPoint(AuthenticationEntryPoint { _, response, authException ->
                     response.writeJSON(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(authException.message))
-                }, RequestHeaderRequestMatcher("X-Requested-With", "XMLHttpRequest"))
-                // 已登录权限不足
-                .accessDeniedHandler(object: AccessDeniedHandlerImpl() {
-                    override fun handle(request: HttpServletRequest, response: HttpServletResponse, accessDeniedException: AccessDeniedException) {
-                        response.writeJSON(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(accessDeniedException.message))
-                    }
+                })
+                // 已认证访问权限不足
+                .accessDeniedHandler(AccessDeniedHandler { _, response, accessDeniedException ->
+                    response.writeJSON(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(accessDeniedException.message))
                 })
                 .and()
                 // 授权
@@ -71,6 +59,11 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .failureHandler { _, response, authException ->
                     response.writeJSON(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(authException.message))
                 }
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/u/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/a/**").hasRole("ADMIN")
+                .anyRequest().permitAll()
     }
 
 }

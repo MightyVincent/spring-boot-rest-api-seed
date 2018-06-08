@@ -2,13 +2,7 @@
 
 ## 简介 Brief
 
-一个基于Spring Boot的种子项目，用于快速构建中小型API、RESTful API项目。
-
-起源于某种子项目[lihengming/spring-boot-api-project-seed](https://github.com/lihengming/spring-boot-api-project-seed)，使用之后发现诸多不如我意的地方，遂想定制一个。
-
-定制期间浏览了一遍`Spring Initializr`上的所有组件，又捡起了好久之前看到的当时还不完善的`Spring Data REST`，读过一遍API后，发现该组件从各方面完完全全能够满足一个REST种子项目的所有需求，其封装程度简直令人咋舌。
-
-于是基于此组件以及个人常用的东西定制了本种子项目，以减少重复工作，开箱即用，节约时间好撩妹?:D
+一个基于Spring Boot及相关组件定制的种子项目，用于快速构建中小型API、RESTful API项目，开箱即用，减少重复工作，节约时间?:D。
 
 ## 核心 Core & 特性 Features
 
@@ -27,5 +21,6 @@ X-Requested-With: XMLHttpRequest
 X-Auth-Token: 2dc26be2-0eb1-49b8-9fcc-6e137160b6b3
 ```
 
-<!-- ## 致谢 Reference -->
+ ## 致谢 Reference
 
+1. [lihengming/spring-boot-api-project-seed](https://github.com/lihengming/spring-boot-api-project-seed)

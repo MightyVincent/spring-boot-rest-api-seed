@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.ResponseBody
+import java.time.LocalDateTime
 
 
 /**
@@ -40,13 +41,13 @@ class UserController {
         return ResponseEntity.ok<Any>(resources)
     }
 
-    @GetMapping("/admin/{saying}")
+    @GetMapping("/a")
     fun admin(@PathVariable saying: String): ResponseEntity<*> {
-        return ResponseEntity.ok<Any>(saying)
+        return ResponseEntity.ok<Any>(LocalDateTime.now())
     }
 
-    @GetMapping("/user/{saying}")
+    @GetMapping("/u")
     fun user(@PathVariable saying: String): ResponseEntity<*> {
-        return ResponseEntity.ok<Any>(saying)
+        return ResponseEntity.ok<Any>(LocalDateTime.now())
     }
 }
