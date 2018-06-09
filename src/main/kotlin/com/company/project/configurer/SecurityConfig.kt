@@ -22,7 +22,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(web: WebSecurity) {
-        web.ignoring().antMatchers("/public/**", "/webjars/**")
+        web.ignoring().antMatchers("/public/**", "/webjars/**", "/browser/**")
     }
 
     override fun configure(builder: AuthenticationManagerBuilder) {
@@ -36,7 +36,6 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
-                .anonymous().disable()
                 .csrf().disable()
                 .cors()
                 .and()
@@ -61,8 +60,6 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 }
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/u/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/api/a/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
     }
 
