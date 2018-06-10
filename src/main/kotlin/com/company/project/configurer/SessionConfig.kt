@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
  */
 @Configuration
 @EnableSpringHttpSession
-class SpringSessionConfig {
+class SessionConfig {
 
     @Bean
     fun sessionRepository(): MapSessionRepository {

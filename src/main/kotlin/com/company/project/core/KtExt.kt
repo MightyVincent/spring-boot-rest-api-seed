@@ -1,9 +1,7 @@
-package com.company.project.utils
+package com.company.project.core
 
-import com.alibaba.fastjson.JSON
-import org.apache.commons.io.IOUtils
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -11,20 +9,37 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 /**
  * @author VincentLee
  */
-fun HttpServletResponse.writeJSON(entity: ResponseEntity<*>) {
-    this.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
-    this.outputStream.use { IOUtils.write(JSON.toJSONString(entity), it, "UTF-8") }
+fun HttpServletRequest.getStatus(): HttpStatus {
+    val statusCode = this.getAttribute("javax.servlet.error.status_code") as Int?
+            ?: return HttpStatus.INTERNAL_SERVER_ERROR
+    return HttpStatus.valueOf(statusCode)
 }
 
 /**
  * @author VincentLee
  */
-fun HttpServletRequest.isAjaxRequest(): Boolean =
-        "XMLHttpRequest" == this.getHeader("X-Requested-With")
+fun HttpServletResponse.ok(content: Any) {
+    this.writeJSON(RR.ok(content))
+}
+
+/**
+ * @author VincentLee
+ */
+fun HttpServletResponse.error(status: HttpStatus, message: String?) {
+    this.writeJSON(RR.status(status).message(message))
+}
+
+/**
+ * @author VincentLee
+ */
+private fun HttpServletResponse.writeJSON(any: Any) {
+    this.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
+    this.characterEncoding = "UTF-8"
+    this.writer.use { it.write(GB.gson.toJson(any)) }
+}
 
 /**
  * @author VincentLee
