@@ -1,5 +1,8 @@
 package com.company.project.core
 
+import com.company.project.core.G.Companion.loggerCache
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import java.time.LocalDateTime
@@ -38,18 +41,31 @@ fun HttpServletResponse.error(status: HttpStatus, message: String?) {
 private fun HttpServletResponse.writeJSON(any: Any) {
     this.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE
     this.characterEncoding = "UTF-8"
-    this.writer.use { it.write(GB.gson.toJson(any)) }
+    this.writer.use { it.write(G.gson.toJson(any)) }
 }
 
 /**
+ * 可能为空的字符串
  * @author VincentLee
  */
 object OptionalString {
-    fun ofEmpty(str: String?): Optional<String> =
+    fun ofEmptyable(str: String?): Optional<String> =
             if (str == null || str == "")
                 Optional.empty()
             else
                 Optional.ofNullable(str)
+}
+
+/**
+ * 可能为空的集合
+ * @author VincentLee
+ */
+object OptionalCollection {
+    fun <T : Collection<Any>> ofEmptyable(c: T?): Optional<T> =
+            if (c == null || c.isEmpty())
+                Optional.empty()
+            else
+                Optional.ofNullable(c)
 }
 
 /**
@@ -67,3 +83,23 @@ fun Date.toLocalDateTime(): LocalDateTime {
 fun LocalDateTime.toDate(): Date {
     return Date.from(this.toInstant(ZoneOffset.UTC))
 }
+
+/**
+ * 否则使用{@link NoSuchElementException}抛出指定异常信息
+ */
+fun <T> Optional<T>.orElseThrow(message: String): T {
+    return this.orElseThrow {
+        throw NoSuchElementException(message)
+    }
+}
+
+/**
+ * 为所有对象附加并缓存logger
+ */
+val Any.logger: Logger
+    get() {
+        val kClass = this::class
+        return loggerCache.getOrPut(kClass) {
+            LoggerFactory.getLogger(kClass.java)
+        }
+    }
