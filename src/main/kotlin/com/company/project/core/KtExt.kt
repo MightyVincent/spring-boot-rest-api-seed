@@ -1,6 +1,6 @@
 package com.company.project.core
 
-import com.company.project.core.G.Companion.loggerCache
+import com.company.project.core.G.loggerCache
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus

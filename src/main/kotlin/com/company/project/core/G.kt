@@ -15,31 +15,31 @@ import kotlin.reflect.KClass
  * global params & beans
  * @author VincentLee
  */
-@Component
-class G : ApplicationContextAware {
-    override fun setApplicationContext(applicationContext: ApplicationContext) {
-        Companion.applicationContext = applicationContext
-    }
+object G {
+    lateinit var gson: Gson
+    lateinit var applicationContext: ApplicationContext
+    lateinit var appProperties: AppProperties
+    val emptyModelAndView: ModelAndView = ModelAndView()
 
-    @Autowired
-    fun setGson(gson: Gson) {
-        Companion.gson = gson
-    }
+    /**
+     * logger缓存
+     */
+    internal val loggerCache = ConcurrentHashMap<KClass<*>, Logger>()
 
-    @Autowired
-    fun setAppProperties(appProperties: AppProperties) {
-        Companion.appProperties = appProperties
-    }
+    @Component
+    internal class GInit : ApplicationContextAware {
+        override fun setApplicationContext(applicationContext: ApplicationContext) {
+            G.applicationContext = applicationContext
+        }
 
-    companion object {
-        lateinit var gson: Gson
-        lateinit var applicationContext: ApplicationContext
-        lateinit var appProperties: AppProperties
-        val emptyModelAndView: ModelAndView = ModelAndView()
+        @Autowired
+        fun setGson(gson: Gson) {
+            G.gson = gson
+        }
 
-        /**
-         * logger缓存
-         */
-        internal val loggerCache = ConcurrentHashMap<KClass<*>, Logger>()
+        @Autowired
+        fun setAppProperties(appProperties: AppProperties) {
+            G.appProperties = appProperties
+        }
     }
 }
